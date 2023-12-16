@@ -10,16 +10,17 @@
       become: true
       apt:
         name: "{{ packages }}"
-          state: present
-          update_cache: yes
+        state: present
+        update_cache: yes
 
     # Find implementation in https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html#examples
     - name: Enable Nginx service, ensure it is not masked and start it
       become: true
       ansible.builtin.systemd:
         name: nginx
-          enabled: yes
-          state: started
+        masked: false
+        enabled: yes
+        state: started
 
     # Find implementation in https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
     # path should be {{ app_dir }}
@@ -68,6 +69,7 @@
       become: true
       ansible.builtin.systemd:
         name: sample
+        masked: false
         enabled: yes
         state: started
 
@@ -99,5 +101,4 @@
     - name: Reload Systemd
       become: true
       ansible.builtin.systemd:
-        name: sample
-        state: reloaded
+        daemon_reload: true
